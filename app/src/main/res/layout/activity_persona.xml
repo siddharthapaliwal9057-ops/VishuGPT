@@ -188,7 +188,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Intelligent, witty &amp; strategic assistant by VishuGPT (VISHAL)"
+                        android:text="Intelligent, witty &amp; strategic assistant by VISHAL"
                         android:textColor="?attr/themeTextMuted"
                         android:textSize="12sp"
                         android:fontFamily="sans-serif"
@@ -371,7 +371,7 @@
                     android:focusable="false" />
             </LinearLayout>
 
-            <!-- 4. TechGPT X Mode -->
+            <!-- 4. VISHAL Mode -->
             <LinearLayout
                 android:id="@+id/cardPersonaTechGpt"
                 android:layout_width="match_parent"
