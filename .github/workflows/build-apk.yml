@@ -30,22 +30,14 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'gradle'
 
-      - name: Setup Android SDK Licenses & Packages
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK Packages & Accept Licenses
         run: |
-          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          if [ ! -f "$SDKMANAGER" ]; then
-            SDKMANAGER=$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f | head -n 1)
-          fi
-          echo "Found sdkmanager at: $SDKMANAGER"
-          
-          # Accept all Android SDK licenses
-          yes | "$SDKMANAGER" --licenses 2>/dev/null || true
-          
-          # Install compile SDK 36 and build-tools 36.0.0
-          echo "Installing Android SDK platforms and build-tools..."
-          yes | "$SDKMANAGER" --install "platforms;android-36" "build-tools;36.0.0" "platform-tools" 2>/dev/null || true
+          yes | sdkmanager --licenses 2>/dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools" || true
 
       - name: Prepare Environment Secrets
         run: |
@@ -68,7 +60,7 @@ jobs:
 
       - name: Build Debug APK
         env:
-          GRADLE_OPTS: "-Xmx3584m -XX:MaxMetaspaceSize=1024m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=false -Dorg.gradle.workers.max=2"
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=false -Dorg.gradle.workers.max=2"
         run: ./gradlew assembleDebug --no-daemon --stacktrace --no-configuration-cache
 
       - name: Upload Debug APK Artifact
