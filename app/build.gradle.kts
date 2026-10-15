@@ -17,8 +17,8 @@ android {
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-    buildConfigField("String", "DEVELOPER_NAME", "\"Tech GPTx\"")
-    buildConfigField("String", "COPYRIGHT_OWNER", "\"Tech GPTx\"")
+    buildConfigField("String", "DEVELOPER_NAME", "\"VISHAL\"")
+    buildConfigField("String", "COPYRIGHT_OWNER", "\"VISHAL\"")
     buildConfigField("String", "PINNED_RELEASE_CERT_SHA256", "\"\"")
     buildConfigField("String", "VERIFICATION_ENDPOINT", "\"\"")
   }
