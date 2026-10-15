@@ -45,7 +45,7 @@ class PersonaActivity : AppCompatActivity() {
         val initialPersona = when (current) {
             GeminiConstants.PERSONALITY_GIRLFRIEND -> GeminiConstants.PERSONALITY_GIRLFRIEND
             GeminiConstants.PERSONALITY_BOYFRIEND -> GeminiConstants.PERSONALITY_BOYFRIEND
-            GeminiConstants.PERSONALITY_VISHUGPT_X, GeminiConstants.PERSONALITY_TECHGPT_X -> GeminiConstants.PERSONALITY_VISHUGPT_X
+            GeminiConstants.PERSONALITY_VISHUGPT_X, GeminiConstants.PERSONALITY_TECHGPT_X, "VishuGPT Mode", "TechGPT X", "TechGPT X Mode", "tech got x" -> GeminiConstants.PERSONALITY_VISHUGPT_X
             GeminiConstants.PERSONALITY_CUSTOM -> GeminiConstants.PERSONALITY_CUSTOM
             else -> GeminiConstants.PERSONALITY_ASSISTANT
         }
@@ -164,7 +164,7 @@ class PersonaActivity : AppCompatActivity() {
         val persona = when (currentSelectedPersona) {
             GeminiConstants.PERSONALITY_GIRLFRIEND -> "Pari"
             GeminiConstants.PERSONALITY_BOYFRIEND -> "Kabir"
-            GeminiConstants.PERSONALITY_VISHUGPT_X, GeminiConstants.PERSONALITY_TECHGPT_X -> "VishuGPT"
+            GeminiConstants.PERSONALITY_VISHUGPT_X, GeminiConstants.PERSONALITY_TECHGPT_X -> "VISHAL"
             GeminiConstants.PERSONALITY_CUSTOM -> preferences.customAssistantName.ifBlank { "Custom Assistant" }
             else -> "Jarvis Pro"
         }
@@ -211,7 +211,7 @@ class PersonaActivity : AppCompatActivity() {
         val personaDisplayName = when (currentSelectedPersona) {
             GeminiConstants.PERSONALITY_GIRLFRIEND -> "Pari (Girlfriend Mode)"
             GeminiConstants.PERSONALITY_BOYFRIEND -> "Kabir (Boyfriend Mode)"
-            GeminiConstants.PERSONALITY_VISHUGPT_X, GeminiConstants.PERSONALITY_TECHGPT_X -> "VishuGPT Neural Core"
+            GeminiConstants.PERSONALITY_VISHUGPT_X, GeminiConstants.PERSONALITY_TECHGPT_X -> "VISHAL Neural Core"
             GeminiConstants.PERSONALITY_CUSTOM -> "${preferences.customAssistantName.ifBlank { "Custom Assistant" }} (Pari Voice)"
             else -> "Jarvis Pro"
         }

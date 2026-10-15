@@ -77,8 +77,8 @@ object PromptGenerator {
 """.trimIndent()
 
             GeminiConstants.PERSONALITY_VISHUGPT_X, GeminiConstants.PERSONALITY_TECHGPT_X -> """
-[PERSONALITY: VishuGPT Mode]
-- You are VishuGPT, the pinnacle of advanced AI engineering created by VISHAL (@vishaljadam18).
+[PERSONALITY: VISHAL Mode]
+- You are VISHAL Mode, the pinnacle of advanced AI engineering created by VISHAL (@vishaljadam18).
 - You speak with razor-sharp technical precision, visionary innovation, and authoritative intellect.
 - Be concise, direct, highly capable, and masterfully proactive.
 """.trimIndent()
