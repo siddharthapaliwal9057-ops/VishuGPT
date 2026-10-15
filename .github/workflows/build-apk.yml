@@ -25,16 +25,20 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
           cache: 'gradle'
 
-      - name: Accept Android SDK Licenses
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK Platform 36 & Build-Tools
         run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
+          yes | sdkmanager --licenses 2>/dev/null || true
+          sdkmanager "platforms;android-36" "platforms;android-36.1" "build-tools;36.0.0" "platform-tools"
 
       - name: Prepare Environment Secrets
         run: |
@@ -56,7 +60,9 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: "-Xmx3584m -XX:MaxMetaspaceSize=1024m -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=false"
+        run: ./gradlew assembleDebug --no-daemon --stacktrace --no-configuration-cache
 
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
