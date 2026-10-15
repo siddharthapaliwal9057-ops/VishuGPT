@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "JARVIS",
+  "description": "JARVIS AI Voice Assistant with real-time phone physical commands, hands-free call control, screen control, and Gemini Live integration.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
