@@ -56,6 +56,9 @@ android {
       signingConfig = signingConfigs.getByName("debugConfig")
     }
   }
+  androidResources {
+    noCompress += listOf("bin", "params", "table", "zip", "tflite", "wav", "mp3", "mdl", "fst", "conf")
+  }
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
