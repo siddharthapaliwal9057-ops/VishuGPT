@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="12dp">
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="12:00 PM"
+        android:textColor="?attr/themeTextMuted"
+        android:textSize="11sp"
+        android:layout_marginBottom="6dp" />
+
+    <TextView
+        android:id="@+id/tvUserTranscript"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:maxWidth="280dp"
+        android:background="@drawable/bg_jarvis_chat_user"
+        android:padding="12dp"
+        android:text="User command"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvJarvisResponse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="8dp"
+        android:maxWidth="290dp"
+        android:background="@drawable/bg_jarvis_chat_assistant"
+        android:padding="12dp"
+        android:text="JARVIS response"
+        android:textColor="?attr/themeTextPrimary"
+        android:textSize="14sp" />
+
+</LinearLayout>

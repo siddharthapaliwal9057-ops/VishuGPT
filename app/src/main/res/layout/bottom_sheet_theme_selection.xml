@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:background="?attr/themeCardBg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Interface Theme"
+            android:textColor="?attr/themeTextPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- 4 Preset Cards -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <!-- Sunset Theme Card -->
+            <FrameLayout
+                android:id="@+id/cardThemeSunset"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_liquid_glow_sunset_1"
+                android:padding="8dp"
+                android:layout_marginEnd="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sunset"
+                    android:textColor="#2E1500"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/ivCheckSunset"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/ic_verified_badge"
+                    android:contentDescription="Active" />
+            </FrameLayout>
+
+            <!-- Dark Theme Card -->
+            <FrameLayout
+                android:id="@+id/cardThemeDark"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_liquid_glow_dark_1"
+                android:padding="8dp"
+                android:layout_marginHorizontal="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cyber Dark"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/ivCheckDark"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/ic_verified_badge"
+                    android:contentDescription="Active"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <!-- Red Theme Card -->
+            <FrameLayout
+                android:id="@+id/cardThemeRed"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_liquid_glow_red_1"
+                android:padding="8dp"
+                android:layout_marginHorizontal="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Neon Red"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/ivCheckRed"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/ic_verified_badge"
+                    android:contentDescription="Active"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <!-- Light Theme Card -->
+            <FrameLayout
+                android:id="@+id/cardThemeLight"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_liquid_glow_light_1"
+                android:padding="8dp"
+                android:layout_marginStart="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Daylight"
+                    android:textColor="#1A1C1E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/ivCheckLight"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/ic_verified_badge"
+                    android:contentDescription="Active"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <!-- Custom Color Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Custom Accent Color"
+            android:textColor="?attr/themeTextPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:id="@+id/swatch1"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="#00E5FF"
+                android:layout_marginEnd="8dp" />
+
+            <View
+                android:id="@+id/swatch2"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="#FF2D55"
+                android:layout_marginEnd="8dp" />
+
+            <View
+                android:id="@+id/swatch3"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="#00E676"
+                android:layout_marginEnd="8dp" />
+
+            <View
+                android:id="@+id/swatch4"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="#FFB300"
+                android:layout_marginEnd="8dp" />
+
+            <View
+                android:id="@+id/swatch5"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="#7C4DFF"
+                android:layout_marginEnd="8dp" />
+
+            <View
+                android:id="@+id/swatch6"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="#FF6F00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="14dp">
+
+            <View
+                android:id="@+id/viewCustomPreview"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00E5FF" />
+
+            <EditText
+                android:id="@+id/etCustomHex"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:padding="10dp"
+                android:background="@drawable/bg_input_field"
+                android:hint="#00E5FF"
+                android:textColor="?attr/themeTextPrimary"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnApplyCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Apply" />
+
+            <ImageView
+                android:id="@+id/ivCheckCustom"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="6dp"
+                android:src="@drawable/ic_verified_badge"
+                android:contentDescription="Active"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginVertical="6dp">
+
+    <!-- User Container -->
+    <LinearLayout
+        android:id="@+id/layoutUserContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="vertical"
+        android:maxWidth="280dp">
+
+        <TextView
+            android:id="@+id/tvUserMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_jarvis_chat_user"
+            android:padding="12dp"
+            android:text="User message"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal"
+            android:layout_marginTop="2dp">
+
+            <ImageView
+                android:id="@+id/btnUserCopy"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="2dp"
+                android:src="@drawable/ic_copy"
+                android:contentDescription="Copy" />
+
+            <ImageView
+                android:id="@+id/btnUserEdit"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="2dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_edit"
+                android:contentDescription="Edit" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Assistant Container -->
+    <LinearLayout
+        android:id="@+id/layoutAssistantContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:orientation="vertical"
+        android:maxWidth="290dp"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/tvAssistantMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_jarvis_chat_assistant"
+            android:padding="12dp"
+            android:text="Assistant message"
+            android:textColor="?attr/themeTextPrimary"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:orientation="horizontal"
+            android:layout_marginTop="2dp">
+
+            <ImageView
+                android:id="@+id/btnAssistantCopy"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="2dp"
+                android:src="@drawable/ic_copy"
+                android:contentDescription="Copy" />
+
+            <ImageView
+                android:id="@+id/btnAssistantPlay"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="2dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_btn_speak_now"
+                android:contentDescription="Play Voice" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

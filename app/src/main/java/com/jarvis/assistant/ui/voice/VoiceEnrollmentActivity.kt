@@ -131,9 +131,9 @@ class VoiceEnrollmentActivity : AppCompatActivity() {
 
         val greenColor = ContextCompat.getColor(this, R.color.status_green)
 
-        binding.tvStep1Dot.setTextColor(if (recordedVectors.size >= 1) greenColor else if (currentSampleIndex == 0) accentColor else mutedColor)
-        binding.tvStep2Dot.setTextColor(if (recordedVectors.size >= 2) greenColor else if (currentSampleIndex == 1) accentColor else mutedColor)
-        binding.tvStep3Dot.setTextColor(if (recordedVectors.size >= 3) greenColor else if (currentSampleIndex == 2) accentColor else mutedColor)
+        binding.tvStep1Dot.backgroundTintList = android.content.res.ColorStateList.valueOf(if (recordedVectors.size >= 1) greenColor else if (currentSampleIndex == 0) accentColor else mutedColor)
+        binding.tvStep2Dot.backgroundTintList = android.content.res.ColorStateList.valueOf(if (recordedVectors.size >= 2) greenColor else if (currentSampleIndex == 1) accentColor else mutedColor)
+        binding.tvStep3Dot.backgroundTintList = android.content.res.ColorStateList.valueOf(if (recordedVectors.size >= 3) greenColor else if (currentSampleIndex == 2) accentColor else mutedColor)
     }
 
     private fun setupListeners() {
@@ -273,8 +273,8 @@ class VoiceEnrollmentActivity : AppCompatActivity() {
         isTesting = true
         binding.btnTestVoice.text = "STOP & VERIFY NOW"
         val amberColor = ContextCompat.getColor(this, R.color.status_amber)
-        binding.btnTestVoice.setTextColor(amberColor)
-        binding.btnTestVoice.strokeColor = android.content.res.ColorStateList.valueOf(amberColor)
+        (binding.btnTestVoice as? com.google.android.material.button.MaterialButton)?.setTextColor(amberColor)
+        (binding.btnTestVoice as? com.google.android.material.button.MaterialButton)?.strokeColor = android.content.res.ColorStateList.valueOf(amberColor)
         binding.layoutTestResult.visibility = View.GONE
 
         startAudioCapture { pcmChunk ->
@@ -293,8 +293,8 @@ class VoiceEnrollmentActivity : AppCompatActivity() {
         val tvAccent = android.util.TypedValue()
         theme.resolveAttribute(R.attr.themeAccent, tvAccent, true)
         val accentColor = if (tvAccent.data != 0) tvAccent.data else ContextCompat.getColor(this, R.color.primary_cyan)
-        binding.btnTestVoice.setTextColor(accentColor)
-        binding.btnTestVoice.strokeColor = android.content.res.ColorStateList.valueOf(accentColor)
+        (binding.btnTestVoice as? com.google.android.material.button.MaterialButton)?.setTextColor(accentColor)
+        (binding.btnTestVoice as? com.google.android.material.button.MaterialButton)?.strokeColor = android.content.res.ColorStateList.valueOf(accentColor)
 
         if (pcmAudio.size < 16000 * 2 * 0.4) {
             binding.layoutTestResult.visibility = View.VISIBLE

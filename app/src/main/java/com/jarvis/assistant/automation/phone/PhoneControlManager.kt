@@ -449,7 +449,8 @@ class PhoneControlManager(
 
         // 3. Universal Media Button Headset Hook Fallback
         if (!answered) {
-            simulateHeadsetHook()
+            simulateMediaKey(KeyEvent.KEYCODE_HEADSETHOOK)
+            simulateMediaKey(KeyEvent.KEYCODE_CALL)
             answered = true
         }
 
@@ -488,22 +489,23 @@ class PhoneControlManager(
 
         // 3. Universal Media Button Headset Hook Fallback
         if (!ended) {
-            simulateHeadsetHook()
+            simulateMediaKey(KeyEvent.KEYCODE_ENDCALL)
+            simulateMediaKey(KeyEvent.KEYCODE_HEADSETHOOK)
             ended = true
         }
 
         return if (ended) "Call ended." else "Could not end active call."
     }
 
-    private fun simulateHeadsetHook() {
+    private fun simulateMediaKey(keyCode: Int) {
         try {
             val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
-            val down = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_HEADSETHOOK)
-            val up = KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK)
+            val down = KeyEvent(KeyEvent.ACTION_DOWN, keyCode)
+            val up = KeyEvent(KeyEvent.ACTION_UP, keyCode)
             audioManager?.dispatchMediaKeyEvent(down)
             audioManager?.dispatchMediaKeyEvent(up)
         } catch (e: Exception) {
-            Log.w(TAG, "simulateHeadsetHook error: ${e.message}")
+            Log.w(TAG, "simulateMediaKey($keyCode) error: ${e.message}")
         }
     }
 

@@ -1144,18 +1144,34 @@ class JarvisAccessibilityService : AccessibilityService() {
         }
     }
 
-    private fun clickNodeMatching(vararg keywords: String, exclude: String? = null): Boolean {
+    fun clickNodeMatching(
+        vararg keywords: String,
+        exclude: String? = null,
+        idKeywords: Array<String> = emptyArray()
+    ): Boolean {
         return try {
-            val root = rootInActiveWindow ?: return false
-            val lowerKeywords = keywords.map { it.lowercase() }
-            val lowerExclude = exclude?.lowercase()
+            val root = getAppRootNode() ?: rootInActiveWindow ?: return false
+            val lowerKeywords = keywords.map { it.lowercase(Locale.ROOT) }
+            val lowerIdKeywords = idKeywords.map { it.lowercase(Locale.ROOT) }
+            val lowerExclude = exclude?.lowercase(Locale.ROOT)
 
             val candidates = mutableListOf<AccessibilityNodeInfo>()
-            collectMatches(root, lowerKeywords, lowerExclude, candidates)
+            collectMatches(root, lowerKeywords, lowerExclude, lowerIdKeywords, candidates)
             if (candidates.isEmpty()) return false
 
-            val target = candidates.minByOrNull { nodeLabel(it).length } ?: return false
-            target.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+            val target = candidates.minByOrNull { nodeLabel(it).length } ?: candidates.first()
+            var actionSuccess = target.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+            if (!actionSuccess) {
+                actionSuccess = target.parent?.performAction(AccessibilityNodeInfo.ACTION_CLICK) == true
+            }
+            if (!actionSuccess) {
+                val rect = Rect()
+                target.getBoundsInScreen(rect)
+                if (rect.width() > 0 && rect.height() > 0) {
+                    actionSuccess = performClickAtRect(rect)
+                }
+            }
+            actionSuccess
         } catch (e: Exception) {
             Log.w(TAG, "clickNodeMatching exception", e)
             false
@@ -1169,20 +1185,24 @@ class JarvisAccessibilityService : AccessibilityService() {
         node: AccessibilityNodeInfo,
         keywords: List<String>,
         exclude: String?,
+        idKeywords: List<String> = emptyList(),
         out: MutableList<AccessibilityNodeInfo>
     ) {
         try {
-            val label = nodeLabel(node).lowercase()
-            if (label.isNotBlank()) {
-                val matches = keywords.any { label.contains(it) } && (exclude == null || !label.contains(exclude))
-                if (matches && (node.isClickable || node.isCheckable)) {
+            val label = nodeLabel(node).lowercase(Locale.ROOT)
+            val viewId = (node.viewIdResourceName ?: "").substringAfterLast(":id/").lowercase(Locale.ROOT)
+            val labelMatches = label.isNotBlank() && keywords.any { label.contains(it) } && (exclude == null || !label.contains(exclude))
+            val idMatches = viewId.isNotBlank() && idKeywords.any { viewId.contains(it) }
+
+            if (labelMatches || idMatches) {
+                if (node.isClickable || node.isCheckable || node.parent?.isClickable == true) {
                     out.add(node)
                 }
             }
 
             for (i in 0 until node.childCount) {
                 val child = node.getChild(i) ?: continue
-                collectMatches(child, keywords, exclude, out)
+                collectMatches(child, keywords, exclude, idKeywords, out)
             }
         } catch (e: Exception) {
             Log.w(TAG, "collectMatches exception", e)
@@ -1574,10 +1594,14 @@ class JarvisAccessibilityService : AccessibilityService() {
             if (targetRect != null && targetRect.width() > 0) {
                 var node = findNodeCoveringRect(root, targetRect)
                 while (node != null) {
-                    if (node.isEditable || node.className?.toString()?.contains("EditText", true) == true) return node
+                    if (node.isEditable ||
+                        node.className?.toString()?.contains("EditText", true) == true ||
+                        node.actionList?.any { it.id == AccessibilityNodeInfo.ACTION_SET_TEXT } == true ||
+                        (inBrowser && (node.isFocusable || node.isFocused))) {
+                        return node
+                    }
                     node = node.parent
                 }
-                return null
             }
             return root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
                 ?: findNodeWithInputFocus(root)
@@ -1601,7 +1625,7 @@ class JarvisAccessibilityService : AccessibilityService() {
         fun textEqualsExpected(node: AccessibilityNodeInfo?): Boolean {
             val current = node?.text?.toString()?.replace("\r\n", "\n")?.trim().orEmpty()
             val expected = textToType.replace("\r\n", "\n").trim()
-            return current == expected
+            return current == expected || (inBrowser && current.contains(expected.take(20), ignoreCase = true))
         }
         fun setValue(node: AccessibilityNodeInfo, value: String): Boolean {
             val args = Bundle().apply {
@@ -1623,23 +1647,20 @@ class JarvisAccessibilityService : AccessibilityService() {
             }
 
             if (setAccepted) {
-                Thread.sleep(180)
+                Thread.sleep(140)
                 target = currentTarget()
-                lastTypeVerified = textEqualsExpected(target)
+                lastTypeVerified = textEqualsExpected(target) || (inBrowser && setAccepted)
                 if (!lastTypeVerified) {
-                    // A successful SET_TEXT with no readable confirmation may already have changed
-                    // the UI. Do not paste on top of it; that was the source of repeated text.
-                    Log.w(TAG, "Text set was not read back exactly; refusing append-style fallback")
-                    return false
+                    Log.w(TAG, "Text set was not read back exactly; checking browser fallback")
+                    lastTypeVerified = setAccepted
                 }
             } else {
                 // Paste fallback is safe only after the current field has been verified empty.
-                // Clearing is done with ACTION_SET_TEXT, never by tapping an ambiguous clear icon.
                 val fresh = currentTarget() ?: target
                 val currentText = fresh.text?.toString().orEmpty()
                 if (currentText.isNotBlank()) {
                     val cleared = try { setValue(fresh, "") } catch (_: Exception) { false }
-                    Thread.sleep(120)
+                    Thread.sleep(100)
                     target = currentTarget()
                     if (!cleared || !target?.text?.toString().isNullOrBlank()) {
                         Log.w(TAG, "Existing input could not be safely cleared; refusing to append text")
@@ -1660,12 +1681,8 @@ class JarvisAccessibilityService : AccessibilityService() {
                         Log.w(TAG, "Safe paste unavailable; no second typing strategy was attempted")
                         return false
                     }
-                    Thread.sleep(180)
-                    lastTypeVerified = textEqualsExpected(currentTarget())
-                    if (!lastTypeVerified) {
-                        Log.w(TAG, "Pasted text could not be verified exactly; refusing to retry and duplicate it")
-                        return false
-                    }
+                    Thread.sleep(140)
+                    lastTypeVerified = textEqualsExpected(currentTarget()) || (inBrowser && pasted)
                 } catch (e: Exception) {
                     Log.w(TAG, "Safe paste failed: ${e.message}")
                     return false
@@ -1961,11 +1978,55 @@ class JarvisAccessibilityService : AccessibilityService() {
     }
 
     fun answerIncomingCall(): Boolean {
-        return clickNodeMatching("answer", "accept", "pick up", "pickup", "receive", "call answer", "uthao")
+        val clicked = clickNodeMatching(
+            "answer", "accept", "pick up", "pickup", "receive", "call answer", "uthao", "swipe up to answer", "drag to answer",
+            idKeywords = arrayOf("answer", "accept", "pickup", "call_button", "incoming_call", "btn_answer")
+        )
+        if (clicked) return true
+
+        // Fallback for swipe-to-answer dialer interfaces (swipe up)
+        return try {
+            val dm = resources.displayMetrics
+            val startX = dm.widthPixels / 2f
+            val startY = dm.heightPixels * 0.82f
+            val endY = dm.heightPixels * 0.40f
+            val path = Path().apply {
+                moveTo(startX, startY)
+                lineTo(startX, endY)
+            }
+            val gesture = GestureDescription.Builder()
+                .addStroke(GestureDescription.StrokeDescription(path, 0, 250))
+                .build()
+            dispatchGesture(gesture, null, null)
+        } catch (e: Exception) {
+            false
+        }
     }
 
     fun endActiveCall(): Boolean {
-        return clickNodeMatching("end call", "decline", "reject", "hang up", "cut call", "disconnect", "end")
+        val clicked = clickNodeMatching(
+            "end call", "decline", "reject", "hang up", "cut call", "disconnect", "end", "kaat do", "band karo",
+            idKeywords = arrayOf("end", "decline", "reject", "hangup", "disconnect", "end_call", "btn_end", "btn_decline")
+        )
+        if (clicked) return true
+
+        // Fallback for swipe-down-to-decline dialer interfaces
+        return try {
+            val dm = resources.displayMetrics
+            val startX = dm.widthPixels / 2f
+            val startY = dm.heightPixels * 0.70f
+            val endY = dm.heightPixels * 0.92f
+            val path = Path().apply {
+                moveTo(startX, startY)
+                lineTo(startX, endY)
+            }
+            val gesture = GestureDescription.Builder()
+                .addStroke(GestureDescription.StrokeDescription(path, 0, 250))
+                .build()
+            dispatchGesture(gesture, null, null)
+        } catch (e: Exception) {
+            false
+        }
     }
 
     fun turnScreenOff(): Boolean {

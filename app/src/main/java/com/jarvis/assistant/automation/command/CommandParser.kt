@@ -74,9 +74,9 @@ object CommandParser {
             clean.matches(Regex("$prefix(?:call|phone)\\s+$answerWords$")) ||
             clean.matches(Regex("$prefix(?:incoming\\s+)?(?:call|phone)\\s+(?:uthao|utha\\s+lo|pick\\s+karo|pickup\\s+karo|receive\\s+karo|attend\\s+karo)$")) ||
             clean == "pick up" || clean == "pickup" || clean == "answer" || clean == "answer call" || clean == "pick up call" ||
-            clean == "pickup call" || clean == "call uthao" || clean == "phone uthao" || clean == "call pick karo" ||
+            clean == "pickup call" || clean == "call uthao" || clean == "phone uthao" || clean == "call utha" || clean == "phone utha" || clean == "call pick karo" ||
             clean == "call utha lo" || clean == "phone pick karo" || clean == "call receive karo" || clean == "phone receive karo" ||
-            clean == "incoming call pick karo" || clean == "incoming call uthao" || clean == "attend call"
+            clean == "incoming call pick karo" || clean == "incoming call uthao" || clean == "attend call" || clean == "receive call"
         ) {
             return ParsedCommandResult(JarvisCommand.AnswerCall, 0.99f, "ANSWER_CALL")
         }
@@ -88,7 +88,9 @@ object CommandParser {
             clean.matches(Regex("$prefix(?:call|phone)\\s+$endWords$")) ||
             clean.matches(Regex("$prefix(?:call|phone)\\s+(?:kaat\\s+do|kat\\s+do|kaato|cut\\s+karo|end\\s+karo|rakh\\s+do|disconnect\\s+karo|reject\\s+karo)$")) ||
             clean == "end call" || clean == "cut call" || clean == "hang up" || clean == "hang up call" || clean == "reject call" ||
-            clean == "call cut karo" || clean == "call kaat do" || clean == "phone kaat do" || clean == "call end karo" ||
+            clean == "call cut" || clean == "phone cut" || clean == "cut the call" || clean == "cut phone" ||
+            clean == "call cut karo" || clean == "call cut kar do" || clean == "phone cut kar do" ||
+            clean == "call kaat do" || clean == "phone kaat do" || clean == "call end karo" ||
             clean == "phone cut karo" || clean == "disconnect call" || clean == "call disconnect karo" || clean == "phone disconnect karo" ||
             clean == "call kat do" || clean == "call kaato" || clean == "call reject karo" || clean == "call decline karo" ||
             clean == "phone rakh do" || clean == "call rakh do"
