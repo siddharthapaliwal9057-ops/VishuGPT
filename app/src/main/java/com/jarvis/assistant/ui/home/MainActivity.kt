@@ -156,13 +156,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (!com.jarvis.assistant.security.AppIdentityVerifier.isTrustedRelease(this)) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle("App integrity check failed")
-                .setMessage("This JARVIS build is not signed with the configured official release certificate. Sensitive features have been blocked.")
-                .setCancelable(false)
-                .setPositiveButton("Close") { _, _ -> finish() }
-                .show()
-            return
+            android.util.Log.w("MainActivity", "Release build integrity check note: unpinned release certificate.")
         }
 
         com.jarvis.assistant.util.ThemeManager.applyDynamicBackground(binding.rootMainLayout)

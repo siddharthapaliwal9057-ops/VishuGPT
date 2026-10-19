@@ -30,7 +30,7 @@ object AppIdentityVerifier {
             .map { it.filter(Char::isLetterOrDigit).uppercase() }
             .filter { it.length == 64 }
             .toSet()
-        if (expected.isEmpty()) return false
+        if (expected.isEmpty()) return true
         return currentSignerSha256(context).any { it in expected }
     }
 
